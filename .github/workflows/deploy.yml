@@ -32,8 +32,6 @@ jobs:
         kill $!  # Остановить бот
       env:
         DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
-        MONGODB_CONNECT: ${{ secrets.MONGODB_CONNECT }}
-        CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
 
   check_for_new_jobs:
     runs-on: ubuntu-latest
