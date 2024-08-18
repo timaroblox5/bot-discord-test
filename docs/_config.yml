@@ -1,7 +1,7 @@
 title: My Awesome Site
 description: A brief description of my site
 baseurl: ""
-url: "https://yourusername.github.io" # ваш URL
+url: "https://timaroblox5.github.io/bot-discord-test/" # ваш URL
 
 theme: jekyll-theme-primer
 plugins:
