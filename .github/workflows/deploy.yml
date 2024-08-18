@@ -2,8 +2,8 @@ name: Deploy Discord Bot
 
 on:
   schedule:
-    - cron: '0 * * * *'  # Запуск каждый час в начале (для первого job)
-    - cron: '58 * * * *'  # Запуск каждые 58 минут (для второго job)
+    - cron: '0 * * * *'  # Запуск каждый час
+    - cron: '58 * * * *'  # Запуск каждые 58 минут
 
 jobs:
   run_bot:
@@ -11,34 +11,34 @@ jobs:
     timeout-minutes: 60  # Общее время выполнения job
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
     
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '20'
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
-    - name: Start Bot
-      run: |
-        echo "Starting bot..."
-        node app.js &  # Запуск бота в фоновом режиме
-        echo "Bot started with process ID $!"
-        sleep 3480  # Подождать 58 минут (3480 секунд)
-        echo "Stopping bot..."
-        kill $!  # Остановить бот
-      env:
-        DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+      - name: Start Bot
+        run: |
+          echo "Starting bot..."
+          nohup node app.js > output.log 2>&1 &  # Запуск бота и перенаправление вывода
+          echo "Bot started with process ID $!"
+          sleep 3480  # Подождать 58 минут
+          echo "Stopping bot..."
+          kill $(jobs -p)  # Остановить все фоновые процессы
+        env:
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
 
   check_for_new_jobs:
     runs-on: ubuntu-latest
-    if: github.event.schedule  # Эта job будет выполняться, только если событие вызвано по расписанию
+    if: github.event.schedule  # Этот job будет выполняться только если событие вызвано по расписанию
 
     steps:
-    - name: Execute additional tasks
-      run: |
-        echo "Executing additional tasks every 58 minutes..."
-        # Здесь можно добавить дополнительные действия, если нужно.
+      - name: Execute additional tasks
+        run: |
+          echo "Executing additional tasks every 58 minutes..."
+          # Здесь можно добавить дополнительные действия, если нужно.
