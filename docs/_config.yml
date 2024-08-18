@@ -1,0 +1,10 @@
+title: My Awesome Site
+description: A brief description of my site
+baseurl: ""
+url: "https://yourusername.github.io" # ваш URL
+
+theme: jekyll-theme-primer
+plugins:
+  - jekyll-github-metadata
+  - jekyll-seo-tag
+  - jekyll-sass-converter
